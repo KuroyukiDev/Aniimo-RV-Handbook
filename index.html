@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aniimo RV Handbook: A Complete Player's Guide</title>
+  <!-- Bootstrap 5 CSS CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    :root {
+      --guide-navy: #132238;
+      --guide-accent: #ff6b35;
+      --guide-gold: #f7b731;
+      --guide-teal: #0eb8ad;
+      --guide-paper: #f9fbfd;
+      --guide-card-bg: #ffffff;
+      --guide-border: #d8e2ec;
+      --guide-text: #2c3e50;
+      --grass-color: #2ecc71;
+      --water-color: #3498db;
+      --fire-color: #e74c3c;
+      --earth-color: #c07d32;
+      --wind-color: #1abc9c;
+      --ice-color: #7ed6df;
+      --dark-color: #574b90;
+      --light-color: #f1c40f;
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+
+    body {
+      background-color: #525659;
+      font-family: 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, Roboto, Oxygen, Ubuntu, sans-serif;
+      color: var(--guide-text);
+      line-height: 1.5;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* Print Paper Page Dimensions: Standard 8.5 x 11 inches */
+    .page-container {
+      width: 8.5in;
+      min-height: 11in;
+      padding: 0.65in 0.65in 0.75in 0.65in;
+      margin: 20px auto;
+      background: var(--guide-paper);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      page-break-after: always;
+      break-after: page;
+      overflow: hidden;
+    }
+
+    @page {
+      size: letter portrait;
+      margin: 0;
+    }
+
+    @media print {
+      body {
+        background: transparent;
+      }
+      .page-container {
+        margin: 0 !important;
+        box-shadow: none !important;
+        border: none !important;
+        page-break-after: always !important;
+        break-after: page !important;
+      }
+    }
+
+    /* Mobile Responsive View */
+    @media (max-width: 8.5in) {
+      .page-container {
+        width: 100% !important;
+        min-height: auto !important;
+        padding: 1.25rem !important;
+        margin: 0 0 1.5rem 0 !important;
+        box-shadow: none !important;
+      }
+    }
+
+    /* Strategy Guide Physical Style Elements */
+    .guide-header-stripe {
+      background: linear-gradient(135deg, var(--guide-navy) 0%, #1e3c72 100%);
+      color: #fff;
+      padding: 8px 16px;
+      border-radius: 8px 8px 0 0;
+      border-bottom: 4px solid var(--guide-accent);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    h1, h2, h3, h4 {
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin: 0;
+    }
+
+    h2.guide-section-title {
+      font-size: 1.45rem;
+      text-transform: uppercase;
+      color: #ffffff;
+    }
+
+    h3.guide-subhead {
+      font-size: 1.15rem;
+      color: var(--guide-navy);
+      border-left: 4px solid var(--guide-accent);
+      padding-left: 8px;
+      margin-top: 14px;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .guide-badge {
+      background-color: var(--guide-accent);
+      color: #ffffff;
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .guide-card {
+      background: var(--guide-card-bg);
+      border: 1px solid var(--guide-border);
+      border-radius: 8px;
+      padding: 12px 14px;
+      margin-bottom: 12px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.03);
+    }
+
+    .tip-box {
+      background: #eef9ff;
+      border-left: 4px solid var(--water-color);
+      border-radius: 0 8px 8px 0;
+      padding: 10px 14px;
+      margin: 10px 0;
+      font-size: 0.88rem;
+    }
+
+    .meta-alert {
+      background: #fff4e6;
+      border-left: 4px solid var(--guide-accent);
+      border-radius: 0 8px 8px 0;
+      padding: 10px 14px;
+      margin: 10px 0;
+      font-size: 0.88rem;
+    }
+
+    .element-pill {
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 12px;
+      color: #fff;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      margin-right: 4px;
+      margin-bottom: 4px;
+    }
+    .el-grass { background: var(--grass-color); }
+    .el-water { background: var(--water-color); }
+    .el-fire { background: var(--fire-color); }
+    .el-earth { background: var(--earth-color); }
+    .el-wind { background: var(--wind-color); }
+    .el-ice { background: var(--ice-color); }
+    .el-dark { background: var(--dark-color); }
+    .el-light { background: var(--light-color); color: #333; }
+
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.82rem;
+      margin: 8px 0;
+    }
+    .data-table th {
+      background: #e9ecef;
+      color: var(--guide-navy);
+      font-weight: 700;
+      padding: 6px 10px;
+      border: 1px solid var(--guide-border);
+      text-transform: uppercase;
+      font-size: 0.75rem;
+    }
+    .data-table td {
+      padding: 6px 10px;
+      border: 1px solid var(--guide-border);
+      background: #ffffff;
+    }
+    .data-table tr:nth-child(even) td {
+      background: #f8fafc;
+    }
+
+    /* Page Footer / Header */
+    .guide-page-footer {
+      border-top: 1.5px solid var(--guide-border);
+      padding-top: 6px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: #7b8a99;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .blueprint-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      background: #1e293b;
+      padding: 10px;
+      border-radius: 8px;
+      color: #fff;
+      font-size: 0.75rem;
+      text-align: center;
+    }
+    .blueprint-cell {
+      background: #334155;
+      padding: 10px 6px;
+      border-radius: 6px;
+      border: 1px dashed #64748b;
+    }
+    .blueprint-cell.highlight {
+      background: #0284c7;
+      border-color: #38bdf8;
+      font-weight: bold;
+    }
+
+    /* Cover Page Specifics */
+    .cover-container {
+      background: radial-gradient(circle at 50% 30%, #1e3c72 0%, #0c1829 100%);
+      color: #ffffff;
+      padding: 2.5in 0.8in 1in 0.8in;
+      text-align: center;
+      justify-content: space-between;
+    }
+    .cover-title {
+      font-size: 3.2rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #f7b731;
+      text-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+      line-height: 1.1;
+    }
+    .cover-subtitle {
+      font-size: 1.25rem;
+      font-weight: 500;
+      color: #d1d8e0;
+      letter-spacing: 0.08em;
+      margin-top: 14px;
+      border-top: 2px solid var(--guide-accent);
+      border-bottom: 2px solid var(--guide-accent);
+      display: inline-block;
+      padding: 8px 24px;
+    }
+    .cover-badge {
+      font-size: 0.85rem;
+      font-weight: bold;
+      color: #ffffff;
+      background: rgba(255, 107, 53, 0.9);
+      padding: 6px 16px;
+      border-radius: 30px;
+      display: inline-block;
+      margin-bottom: 24px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ================= PAGE 1: COVER ================= -->
+  <div class="page-container cover-container">
+    <div>
+      <span class="cover-badge">Unofficial Pathfinder Field Strategy</span>
+      <h1 class="cover-title">ANIIMO RV HANDBOOK</h1>
+      <div class="cover-subtitle">A Complete Player's Guide to a Well-Optimized RV</div>
+    </div>
+
+    <!-- Center Emblem / Graphic Simulation -->
+    <div style="margin: 40px auto; max-width: 320px;">
+      <svg viewBox="0 0 200 200" style="width: 100%; height: auto; filter: drop-shadow(0 6px 12px rgba(0,0,0,0.5));">
+        <circle cx="100" cy="100" r="90" fill="none" stroke="#f7b731" stroke-width="4" stroke-dasharray="8 6"/>
+        <rect x="40" y="70" width="120" height="70" rx="12" fill="#38bdf8"/>
+        <rect x="50" y="80" width="30" height="24" rx="4" fill="#0f172a"/>
+        <rect x="90" y="80" width="30" height="24" rx="4" fill="#0f172a"/>
+        <circle cx="65" cy="140" r="14" fill="#334155" stroke="#f8fafc" stroke-width="4"/>
+        <circle cx="135" cy="140" r="14" fill="#334155" stroke="#f8fafc" stroke-width="4"/>
+        <polygon points="100,25 115,55 85,55" fill="#ff6b35"/>
+        <path d="M70,55 L130,55" stroke="#ff6b35" stroke-width="4" stroke-linecap="round"/>
+      </svg>
+      <div style="font-size: 0.85rem; color: #a5b1c2; margin-top: 15px; font-weight: 600; text-transform: uppercase;">
+        Pawprint Interactive Engine • Field Edition 1.0
+      </div>
+    </div>
+
+    <div>
+      <div style="background: rgba(255,255,255,0.08); padding: 16px; border-radius: 8px; font-size: 0.82rem; line-height: 1.6;">
+        <strong>COMPREHENSIVE HOMELAND BLUEPRINTS INSIDE:</strong><br>
+        RV Upgrade Thresholds • Job Workload Formulas (60 to 150 WL/m) • Hatchinator Stacking • Elemental Job Distribution Matrix • Max Profit Order Routing
+      </div>
+      <div style="margin-top: 25px; font-size: 0.75rem; color: #8395a7; text-transform: uppercase;">
+        Creator Community Resource<br/>Verified for Global Launch<br/>Created By: <span style="text-transform: none;">Wolfiechan (IGN)</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= PAGE 2: CHAPTER 1 & 2 ================= -->
+  <div class="page-container">
+    <div>
+      <!-- Native Heading tag maps cleanly to PDF Navigation Outline -->
+      <div class="guide-header-stripe">
+        <h2 class="guide-section-title">1. Homeland & RV Foundation</h2>
+        <span class="guide-badge">Milestone 01</span>
+      </div>
+
+      <h3 class="guide-subhead">Unlocking Your Mobile Pocket Dimension</h3>
+      <div class="guide-card">
+        <p style="font-size: 0.86rem; margin-bottom: 8px;">
+          The RV is far more than cosmetic housing—it acts as your account’s resource hub, passive incubator station, and passive income generator.
+        </p>
+        <div class="row g-2">
+          <div class="col-sm-6">
+            <div style="background: #f1f5f9; padding: 8px; border-radius: 6px; font-size: 0.82rem;">
+              <strong>Step 1: Complete Sea of Flowers</strong><br>
+              Progress through main story quests until you report to <em>Dr. Lewis</em> and achieve <em>Student Level II</em> status.
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div style="background: #f1f5f9; padding: 8px; border-radius: 6px; font-size: 0.82rem;">
+              <strong>Step 2: Meet Fannie</strong><br>
+              In your <em>Elite Trainer</em> tab, track <em>"Prologue: Wondrous RV"</em> to find Fannie’s camper on your map.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tip-box">
+        <strong>TRAINER NOTE — PARK BOARDS:</strong> You can summon and park your RV at designated Park Boards throughout Idyll. Entering the RV lets you step through the back door portal directly into your private Homeland farmstead without wasting open-world travel time.
+      </div>
+
+      <h3 class="guide-subhead">RV Hub Progression & Level Milestones</h3>
+      <p style="font-size: 0.85rem;">
+        Prioritize leveling your RV above cosmetic decor. Upgrading directly increases your active Aniimo worker cap, unlocks high-tier production stations, and awards additional <strong>Hatchinators</strong>.
+      </p>
+
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>RV Tier</th>
+            <th>Aniimo Capacity</th>
+            <th>Farm Plots</th>
+            <th>Key Facility Unlocks & Perks</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Tier 1</strong></td>
+            <td>4 Workers</td>
+            <td>2 Plots</td>
+            <td>Basic Crop Fields, Primary Kitchen, Work Bench</td>
+          </tr>
+          <tr>
+            <td><strong>Tier 2</strong></td>
+            <td>6 Workers</td>
+            <td>4 Plots</td>
+            <td>Lumber Sawmill, Stone Crushing Basin, +1 Hatchinator</td>
+          </tr>
+          <tr>
+            <td><strong>Tier 3</strong></td>
+            <td>8 Workers</td>
+            <td>6 Plots</td>
+            <td>Brewing Kegs, Loom & Textile Mill (Cloth Production)</td>
+          </tr>
+          <tr>
+            <td><strong>Tier 4</strong></td>
+            <td>10 Workers</td>
+            <td>8 Plots</td>
+            <td>Advanced Bakery, Smelting Kiln, +1 Hatchinator</td>
+          </tr>
+          <tr>
+            <td><strong>Tier 5+</strong></td>
+            <td>12+ Workers</td>
+            <td>10+ Plots</td>
+            <td>Electric Automation Station, Rare Breed Incubator</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="meta-alert">
+        <strong>RESOURCE ALERT:</strong> Upgrading your RV requires specialized materials dropped by world shiny nodes and daily Homeland Order completions. Never let your Homeland coin reserves sit idle; reinvest them immediately into RV leveling to hit Tier 3 before day 3 of server launch.
+      </div>
+    </div>
+
+    <div class="guide-page-footer">
+      <span>Aniimo RV Player's Handbook</span>
+      <span>Section 1 • Page 1</span>
+    </div>
+  </div>
+
+  <!-- ================= PAGE 3: CHAPTER 3 ================= -->
+  <div class="page-container">
+    <div>
+      <div class="guide-header-stripe">
+        <h2 class="guide-section-title">2. Workload Formula & Elemental Roles</h2>
+        <span class="guide-badge">Mechanics</span>
+      </div>
+
+      <h3 class="guide-subhead">The Universal Workload Math</h3>
+      <div class="guide-card">
+        <p style="font-size: 0.86rem; margin-bottom: 8px;">
+          Production facilities require a fixed <em>Total Workload</em> value to finish one craft. An assigned Aniimo completes workload based strictly on their <strong>Homeland Job Level</strong>:
+        </p>
+        <div class="row text-center g-2">
+          <div class="col-3">
+            <div style="background: #e2e8f0; padding: 6px; border-radius: 4px;">
+              <div style="font-size: 0.72rem; font-weight: bold; color: #475569;">LEVEL 1</div>
+              <div style="font-size: 1.05rem; font-weight: 800; color: var(--guide-navy);">60 WL/m</div>
+              <div style="font-size: 0.7rem; color: #64748b;">(1.0/sec)</div>
+            </div>
+          </div>
+          <div class="col-3">
+            <div style="background: #e2e8f0; padding: 6px; border-radius: 4px;">
+              <div style="font-size: 0.72rem; font-weight: bold; color: #475569;">LEVEL 2</div>
+              <div style="font-size: 1.05rem; font-weight: 800; color: #0284c7;">90 WL/m</div>
+              <div style="font-size: 0.7rem; color: #64748b;">(+50%)</div>
+            </div>
+          </div>
+          <div class="col-3">
+            <div style="background: #e2e8f0; padding: 6px; border-radius: 4px;">
+              <div style="font-size: 0.72rem; font-weight: bold; color: #475569;">LEVEL 3</div>
+              <div style="font-size: 1.05rem; font-weight: 800; color: #16a34a;">120 WL/m</div>
+              <div style="font-size: 0.7rem; color: #64748b;">(+100%)</div>
+            </div>
+          </div>
+          <div class="col-3">
+            <div style="background: #fef08a; padding: 6px; border-radius: 4px;">
+              <div style="font-size: 0.72rem; font-weight: bold; color: #854d0e;">LEVEL 4</div>
+              <div style="font-size: 1.05rem; font-weight: 800; color: #ca8a04;">150 WL/m</div>
+              <div style="font-size: 0.7rem; color: #854d0e;">(+150%)</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <h3 class="guide-subhead">Elemental Job Affinity Distribution</h3>
+      <p style="font-size: 0.84rem;">
+        An Aniimo’s Element governs which specific Homeland stations it can operate. Matching the appropriate element ensures uninterrupted offline automated farming:
+      </p>
+
+      <div class="row g-2">
+        <div class="col-sm-6">
+          <div class="guide-card" style="height: 100%;">
+            <span class="element-pill el-grass">Grass</span> <strong>Planting & Gathering</strong>
+            <p style="font-size: 0.8rem; margin: 4px 0;">Crucial for sowing seeds in farm plots and gathering wild herbs.</p>
+            
+            <span class="element-pill el-water">Water</span> <strong>Irrigation & Brewing</strong>
+            <p style="font-size: 0.8rem; margin: 4px 0;">Waters crops to avoid dry stalls; required to brew tonics & drinks.</p>
+
+            <span class="element-pill el-earth">Earth</span> <strong>Quarrying & Mining</strong>
+            <p style="font-size: 0.8rem; margin: 4px 0;">Extracts stone, minerals, and base ore from homeland deposit mounds.</p>
+
+            <span class="element-pill el-wind">Wind</span> <strong>Milling & Processing</strong>
+            <p style="font-size: 0.8rem; margin: 4px 0;">Runs windmills, flour grinders, and carding brushes for fibers.</p>
+          </div>
+        </div>
+
+        <div class="col-sm-6">
+          <div class="guide-card" style="height: 100%;">
+            <span class="element-pill el-fire">Fire / Spark</span> <strong>Smelting & Cooking</strong>
+            <p style="font-size: 0.8rem; margin: 4px 0;">Fuels bread ovens and cooks battle rations in the Homestead Kitchen.</p>
+
+            <span class="element-pill el-ice">Ice</span> <strong>Cold Storage / Cooling</strong>
+            <p style="font-size: 0.8rem; margin: 4px 0;">Extends perishability timers for cooked dishes and dairy yields.</p>
+
+            <span class="element-pill el-dark">Dark</span> <strong>Harvesting & Drying</strong>
+            <p style="font-size: 0.8rem; margin: 4px 0;">Harvests fully grown plots cleanly and dries herbs/meats on racks.</p>
+
+            <span class="element-pill el-light">Light</span> <strong>Incubation & Growth Aura</strong>
+            <p style="font-size: 0.8rem; margin: 4px 0;">Illuminates the homestead and accelerates egg timers in Hatchinators.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="meta-alert">
+        <strong>THE "DO NOT RELEASE" RULE:</strong> When cleaning your box using bulk release, be careful not to trash evolved or rare-element variants that roll <em>Level 2+ Work Traits</em>. An Aniimo with terrible battle stats can still be an S-Tier Homeland worker!
+      </div>
+    </div>
+
+    <div class="guide-page-footer">
+      <span>Aniimo RV Player's Handbook</span>
+      <span>Section 2 • Page 2</span>
+    </div>
+  </div>
+
+  <!-- ================= PAGE 4: CHAPTER 4 ================= -->
+  <div class="page-container">
+    <div>
+      <div class="guide-header-stripe">
+        <h2 class="guide-section-title">3. Production Chains & Layout Meta</h2>
+        <span class="guide-badge">Optimization</span>
+      </div>
+
+      <h3 class="guide-subhead">The Multi-Tier Production Pipeline</h3>
+      <p style="font-size: 0.84rem;">
+        Raw crops earn negligible Home Coins. Raw items should always be funneled through Tier 2 and Tier 3 processing lines before fulfilling daily orders or vendor sales:
+      </p>
+
+      <div class="guide-card">
+        <div style="font-size: 0.8rem; font-family: monospace; line-height: 1.8;">
+          <strong style="color: var(--grass-color);">[Raw Crop: Wheat/Flax]</strong><br>
+          &nbsp;&nbsp;↳ <em>Wind Station (Milling/Spinning)</em> ➔ <strong>Fine Flour</strong> / <strong>Linen Thread</strong><br>
+          &nbsp;&nbsp;&nbsp;&nbsp;↳ <em>Kitchen Oven (Fire)</em> ➔ <strong>Golden Brioche</strong> (+420% Coin Value)<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;↳ <em>Loom Station (Wind/Dark)</em> ➔ <strong>Artisan Bolt Cloth</strong> (+380% Coin Value)
+        </div>
+      </div>
+
+      <h3 class="guide-subhead">Homeland Blueprint Layout Architecture</h3>
+      <p style="font-size: 0.84rem;">
+        Grouping stations by elemental workflows prevents idle travel lag and maximizes proximity buffs:
+      </p>
+
+      <div class="blueprint-grid mb-3">
+        <div class="blueprint-cell highlight">FARM PLOT 1<br><small>Grass Sower</small></div>
+        <div class="blueprint-cell highlight">FARM PLOT 2<br><small>Water Irrigator</small></div>
+        <div class="blueprint-cell">STORAGE BIN<br><small>Shared Access</small></div>
+        <div class="blueprint-cell highlight">FARM PLOT 3<br><small>Dark Harvester</small></div>
+
+        <div class="blueprint-cell highlight">WINDMILL<br><small>Flour Milling</small></div>
+        <div class="blueprint-cell highlight">BAKERY OVEN<br><small>Fire Cook</small></div>
+        <div class="blueprint-cell highlight">HATCHINATOR 1<br><small>Light Warmth</small></div>
+        <div class="blueprint-cell highlight">HATCHINATOR 2<br><small>Light Warmth</small></div>
+      </div>
+
+      <h3 class="guide-subhead">Hatchinator Passive Synergy</h3>
+      <div class="guide-card">
+        <p style="font-size: 0.84rem; margin-bottom: 6px;">
+          Hatchinators are your primary source of high-potential Aniimo and rare variant traits. 
+        </p>
+        <ul style="font-size: 0.82rem; padding-left: 18px; margin-bottom: 0;">
+          <li>Keep an active <strong>Light-element Aniimo</strong> assigned near your incubator zone to reduce egg hatch duration by up to 25%.</li>
+          <li>Never leave a slot empty before logging off; offline timers continue running while your game is closed.</li>
+          <li>Prioritize eggs obtained from the <em>Egg Heist</em> activity to unlock cross-trait workers.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="guide-page-footer">
+      <span>Aniimo RV Player's Handbook</span>
+      <span>Section 3 • Page 3</span>
+    </div>
+  </div>
+
+  <!-- ================= PAGE 5: CHAPTER 5 & 6 ================= -->
+  <div class="page-container">
+    <div>
+      <div class="guide-header-stripe">
+        <h2 class="guide-section-title">4. Economy & Daily Meta Checklist</h2>
+        <span class="guide-badge">Mastery</span>
+      </div>
+
+      <h3 class="guide-subhead">Home Coin Value & Order Strategy</h3>
+      <p style="font-size: 0.85rem;">
+        Do not sell basic resources at the general RV trade counter. Instead, inspect your <strong>Homeland Season Order Board</strong> each day:
+      </p>
+
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Order Class</th>
+            <th>Required Output</th>
+            <th>Profit Yield</th>
+            <th>Trainer Recommendation</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Common Board</strong></td>
+            <td>Raw Wheat / Wood Logs</td>
+            <td>50 - 120 Coins</td>
+            <td><span class="badge bg-secondary">SKIP</span> Low ROI; consumes worker stamina.</td>
+          </tr>
+          <tr>
+            <td><strong>Artisan Board</strong></td>
+            <td>Linen Cloth / Brewed Tea</td>
+            <td>450 - 900 Coins</td>
+            <td><span class="badge bg-primary">RECOMMENDED</span> Standard daily staple loop.</td>
+          </tr>
+          <tr>
+            <td><strong>Gourmet Tier</strong></td>
+            <td>Confectionery & Preserves</td>
+            <td>1,200+ Coins</td>
+            <td><span class="badge bg-success">PRIORITY</span> Always hoard materials for these orders.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3 class="guide-subhead">The Master Pathfinder Daily RV Checklist</h3>
+      <div class="guide-card">
+        <div style="font-size: 0.82rem;">
+          <div class="form-check mb-1">
+            <input class="form-check-input" type="checkbox" checked disabled>
+            <label class="form-check-label"><strong>Morning Login:</strong> Clear offline outputs; re-queue 4-hour artisan crafts.</label>
+          </div>
+          <div class="form-check mb-1">
+            <input class="form-check-input" type="checkbox" checked disabled>
+            <label class="form-check-label"><strong>Egg Collection:</strong> Collect hatched pods from all active Hatchinators; reload empty slots.</label>
+          </div>
+          <div class="form-check mb-1">
+            <input class="form-check-input" type="checkbox" checked disabled>
+            <label class="form-check-label"><strong>Order Fulfillments:</strong> Complete Gourmet and Artisan orders first to refresh daily bonus multipliers.</label>
+          </div>
+          <div class="form-check mb-1">
+            <input class="form-check-input" type="checkbox" checked disabled>
+            <label class="form-check-label"><strong>Park Board Repositioning:</strong> Relocate RV near your current exploration sector for instant staging and recovery.</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" checked disabled>
+            <label class="form-check-label"><strong>Pre-Logout Prep:</strong> Set high-workload recipes (120+ WL crafts) so workers stay productive overnight.</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="meta-alert" style="margin-top: 14px;">
+        <strong>FINAL WORD FROM THE AUTHOR:</strong> An optimized RV turns a Pathfinder from a resource-starved wanderer into an economic powerhouse. Balance combat adventures across Idyll with routine Homeland management, and your RV will effortlessly fund your journey to the sky-floating metropolis!
+      </div>
+    </div>
+
+    <div class="guide-page-footer">
+      <span>Aniimo RV Player's Handbook</span>
+      <span>Section 4 • Page 4 • End of Handbook</span>
+    </div>
+  </div>
+
+</body>
+</html>
