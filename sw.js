@@ -1,15 +1,11 @@
 // sw.js
-const CACHE_NAME = 'aniimo-rv-v1';
+const CACHE_NAME = 'aniimo-rv-v2.0.0';
 
 // Essential files to cache
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
   './manifest.json',
-  './icons/windows/icon.ico',
-  './icons/mobile/icon-180x180.png',
-  './icons/mobile/icon-192x192.png',
-  './icons/mobile/icon-512x512.png',
   'https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css'
 ];
 
