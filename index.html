@@ -670,5 +670,64 @@
     </div>
   </div>
 
+<!-- Service Worker Registration & PWA Handler -->
+<script>
+  // 1. Immediate Registration with absolute safety check
+  if ('serviceWorker' in navigator) {
+    const registerServiceWorker = () => {
+      navigator.serviceWorker.register('./sw.js', { scope: './' })
+        .then((reg) => {
+          console.log('[PWA] Service Worker registered with scope:', reg.scope);
+          // Check for worker updates
+          reg.onupdatefound = () => {
+            const installingWorker = reg.installing;
+            installingWorker.onstatechange = () => {
+              if (installingWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                console.log('[PWA] New handbook version available. Reload to update.');
+              }
+            };
+          };
+        })
+        .catch((error) => {
+          console.error('[PWA] Service Worker registration failed:', error);
+        });
+    };
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', registerServiceWorker);
+    } else {
+      registerServiceWorker();
+    }
+  }
+
+  // 2. Allow native Chrome install icon to appear naturally
+  let pwaDeferredPrompt = null;
+  window.addEventListener('beforeinstallprompt', (event) => {
+    console.log('[PWA] beforeinstallprompt event fired! PWA is installable.');
+    pwaDeferredPrompt = event;
+
+    // If you have a custom on-page install button, show it
+    const installBtn = document.getElementById('pwa-install-btn');
+    if (installBtn) {
+      installBtn.style.display = 'inline-block';
+      installBtn.addEventListener('click', async () => {
+        if (pwaDeferredPrompt) {
+          pwaDeferredPrompt.prompt();
+          const choice = await pwaDeferredPrompt.userChoice;
+          console.log('[PWA] User choice:', choice.outcome);
+          pwaDeferredPrompt = null;
+          installBtn.style.display = 'none';
+        }
+      });
+    }
+    // NOTE: We do NOT call event.preventDefault() here unless a custom button is actively used.
+    // This allows Chrome to automatically show the "Install" icon in the address bar.
+  });
+
+  window.addEventListener('appinstalled', () => {
+    console.log('[PWA] Aniimo RV Handbook was installed successfully!');
+  });
+</script>
+
 </body>
 </html>
