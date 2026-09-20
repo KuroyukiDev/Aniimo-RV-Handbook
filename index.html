@@ -6,27 +6,28 @@
   <title>Aniimo RV Handbook: A Complete Player's Guide</title>
   <!-- Bootstrap 5 CSS CDN -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-  <!-- Web App Manifest -->
-  <link rel="manifest" href="./manifest.json">
+  
+  <!-- PWA & Mobile Web App Meta Tags -->
+  
+  <!-- Service Worker Registration & PWA Handler -->
+  <script src="/Aniimo-RV-Handbook/main.js" defer></script>
+  <link rel="manifest" href="/Aniimo-RV-Handbook/manifest.json">
   <meta name="theme-color" content="#132238">
 
-  <!-- Windows / Desktop Browser Favicon -->
-  <link rel="icon" type="image/x-icon" href="https://github.com/KuroyukiDev/Aniimo-RV-Handbook/tree/6941d13486eff53ec3193561bfb81ffe06a880bc/icons/windows/icon.ico">
-  <link rel="shortcut icon" href="https://github.com/KuroyukiDev/Aniimo-RV-Handbook/tree/6941d13486eff53ec3193561bfb81ffe06a880bc/icons/windows/icon.ico">
-
-  <!-- Apple iOS / Safari Support -->
+  <!-- Mobile Standards -->
+  <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="RV Handbook">
-  <link rel="apple-touch-icon" href="https://github.com/KuroyukiDev/Aniimo-RV-Handbook/tree/6941d13486eff53ec3193561bfb81ffe06a880bc/icons/mobile/icon-180x180.png">
-  <link rel="apple-touch-icon" sizes="120x120" href="https://github.com/KuroyukiDev/Aniimo-RV-Handbook/tree/6941d13486eff53ec3193561bfb81ffe06a880bc/icons/mobile/icon-120x120.png">
-  <link rel="apple-touch-icon" sizes="152x152" href="https://github.com/KuroyukiDev/Aniimo-RV-Handbook/tree/6941d13486eff53ec3193561bfb81ffe06a880bc/icons/mobile/icon-152x152.png">
-  <link rel="apple-touch-icon" sizes="167x167" href="https://github.com/KuroyukiDev/Aniimo-RV-Handbook/tree/6941d13486eff53ec3193561bfb81ffe06a880bc/icons/mobile/icon-167x167.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="https://github.com/KuroyukiDev/Aniimo-RV-Handbook/tree/6941d13486eff53ec3193561bfb81ffe06a880bc/icons/mobile/icon-180x180.png">
 
-  <!-- Windows Live Tile Pinning -->
+  <!-- Favicon & Touch Icons -->
+  <link rel="icon" type="image/x-icon" href="/Aniimo-RV-Handbook/icons/windows/icon.ico">
+  <link rel="shortcut icon" href="/Aniimo-RV-Handbook/icons/windows/icon.ico">
+  <link rel="apple-touch-icon" href="/Aniimo-RV-Handbook/icons/mobile/icon-180x180.png">
+
+  <!-- Windows Tile Pinning -->
   <meta name="msapplication-TileColor" content="#132238">
-  <meta name="msapplication-TileImage" content="https://github.com/KuroyukiDev/Aniimo-RV-Handbook/tree/6941d13486eff53ec3193561bfb81ffe06a880bc/icons/mobile/icon-144x144.png">
+  <meta name="msapplication-TileImage" content="/Aniimo-RV-Handbook/icons/mobile/icon-192x192.png">
   <style>
     :root {
       --guide-navy: #132238;
@@ -670,64 +671,6 @@
     </div>
   </div>
 
-<!-- Service Worker Registration & PWA Handler -->
-<script>
-  // 1. Immediate Registration with absolute safety check
-  if ('serviceWorker' in navigator) {
-    const registerServiceWorker = () => {
-      navigator.serviceWorker.register('./sw.js', { scope: './' })
-        .then((reg) => {
-          console.log('[PWA] Service Worker registered with scope:', reg.scope);
-          // Check for worker updates
-          reg.onupdatefound = () => {
-            const installingWorker = reg.installing;
-            installingWorker.onstatechange = () => {
-              if (installingWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                console.log('[PWA] New handbook version available. Reload to update.');
-              }
-            };
-          };
-        })
-        .catch((error) => {
-          console.error('[PWA] Service Worker registration failed:', error);
-        });
-    };
-
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', registerServiceWorker);
-    } else {
-      registerServiceWorker();
-    }
-  }
-
-  // 2. Allow native Chrome install icon to appear naturally
-  let pwaDeferredPrompt = null;
-  window.addEventListener('beforeinstallprompt', (event) => {
-    console.log('[PWA] beforeinstallprompt event fired! PWA is installable.');
-    pwaDeferredPrompt = event;
-
-    // If you have a custom on-page install button, show it
-    const installBtn = document.getElementById('pwa-install-btn');
-    if (installBtn) {
-      installBtn.style.display = 'inline-block';
-      installBtn.addEventListener('click', async () => {
-        if (pwaDeferredPrompt) {
-          pwaDeferredPrompt.prompt();
-          const choice = await pwaDeferredPrompt.userChoice;
-          console.log('[PWA] User choice:', choice.outcome);
-          pwaDeferredPrompt = null;
-          installBtn.style.display = 'none';
-        }
-      });
-    }
-    // NOTE: We do NOT call event.preventDefault() here unless a custom button is actively used.
-    // This allows Chrome to automatically show the "Install" icon in the address bar.
-  });
-
-  window.addEventListener('appinstalled', () => {
-    console.log('[PWA] Aniimo RV Handbook was installed successfully!');
-  });
-</script>
 
 </body>
 </html>
